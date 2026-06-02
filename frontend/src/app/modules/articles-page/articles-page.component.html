@@ -1,0 +1,33 @@
+<div class="articles-wrapper">
+
+	<div class="toolbar">
+		<button class="btn-primary" routerLink="/home/articles/create">Créer un article</button>
+		<button class="sort-btn" (click)="toggleSort()">
+			Trier par {{ sort() === 'desc' ? '↓' : '↑' }}
+		</button>
+	</div>
+
+	@if (loading()) {
+	<p class="status-msg">Chargement…</p>
+	} @else if (error()) {
+	<p class="status-msg error">{{ error() }}</p>
+	} @else if (posts().length === 0) {
+	<p class="status-msg">
+		Aucun article dans votre fil. Abonnez-vous à des thèmes pour voir des articles.
+	</p>
+	} @else {
+	<ul class="posts-grid">
+		@for (post of posts(); track post.id) {
+		<li class="post-card" (click)="navigateToArticle(post.id)">
+			<h2 class="post-title">{{ post.title }}</h2>
+			<div class="post-meta">
+				<span>{{ post.createdAt | date:'dd/MM/yyyy' }}</span>
+				<span>{{ post.author.username }}</span>
+			</div>
+			<p class="post-excerpt">{{ post.content }}</p>
+		</li>
+		}
+	</ul>
+	}
+
+</div>

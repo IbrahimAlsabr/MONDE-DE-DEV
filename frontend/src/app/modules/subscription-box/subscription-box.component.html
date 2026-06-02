@@ -1,0 +1,21 @@
+<div class="topic-card">
+	<h3 class="topic-name">{{ name }}</h3>
+
+	@if (description) {
+	<p class="topic-desc">{{ description }}</p>
+	}
+
+	@if (mode === 'profile') {
+	<button class="btn btn-unsubscribe" (click)="unsubscribe.emit()" [disabled]="loading">
+		Se désabonner
+	</button>
+	} @else if (subscribed) {
+	<button class="btn btn-already" disabled>
+		Déjà abonné
+	</button>
+	} @else {
+	<button class="btn btn-subscribe" (click)="subscribe.emit()" [disabled]="loading">
+		S'abonner
+	</button>
+	}
+</div>

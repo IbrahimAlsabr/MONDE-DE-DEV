@@ -1,0 +1,125 @@
+.create-wrapper {
+  padding: 28px 32px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ── Header ──────────────────────────────────────── */
+.create-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #111;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+
+  &:hover {
+    color: #6c63ff;
+  }
+}
+
+.create-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  color: #111;
+}
+
+/* ── Form ────────────────────────────────────────── */
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-control {
+  width: 100%;
+  border: 1px solid #bdbdbd;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #111;
+  font-family: inherit;
+  outline: none;
+  background: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+
+  &:focus {
+    border-color: #6c63ff;
+  }
+
+  &::placeholder {
+    color: #aaa;
+  }
+}
+
+select.form-control {
+  cursor: pointer;
+  appearance: auto;
+  color: #111;
+
+  option[disabled] {
+    color: #aaa;
+  }
+}
+
+.content-area {
+  resize: vertical;
+  min-height: 180px;
+  line-height: 1.6;
+}
+
+/* ── Submit button ───────────────────────────────── */
+.btn-primary {
+  align-self: center;
+  background: #6c63ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 11px 48px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) {
+    background: #5a52d5;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/* ── Error ───────────────────────────────────────── */
+.error-msg {
+  background: #fdecea;
+  border: 1px solid #f5c6cb;
+  color: #d32f2f;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+/* ── Responsive ──────────────────────────────────── */
+@media (max-width: 768px) {
+  .create-wrapper {
+    padding: 16px;
+  }
+
+  .create-title {
+    font-size: 17px;
+  }
+}

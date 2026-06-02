@@ -1,0 +1,44 @@
+<header class="header">
+	<!-- Logo -->
+	<a class="logo" routerLink="/home">
+		<img src="/logo.png" alt="MDD" />
+	</a>
+
+	<!-- Desktop nav -->
+	<nav class="desktop-nav">
+		<button class="logout-btn" (click)="logout()">Se déconnecter</button>
+		<a class="nav-link" routerLink="/home/articles">Articles</a>
+		<a class="nav-link" routerLink="/home/themes">Thèmes</a>
+	</nav>
+
+	<!-- Desktop profile icon -->
+	<a class="profile-icon desktop-profile" routerLink="/home/profile" aria-label="Profil">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+			stroke-width="1.5">
+			<circle cx="12" cy="8" r="4" />
+			<path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+		</svg>
+	</a>
+
+	<!-- Mobile: hamburger -->
+	<button class="hamburger" (click)="toggleDrawer()" aria-label="Menu">
+		<span></span><span></span><span></span>
+	</button>
+</header>
+
+<!-- Mobile drawer overlay -->
+@if (drawerOpen()) {
+<div class="overlay" (click)="closeDrawer()"></div>
+<aside class="drawer">
+	<button class="logout-btn" (click)="logout(); closeDrawer()">Se déconnecter</button>
+	<a class="nav-link" routerLink="/home/articles" (click)="closeDrawer()">Articles</a>
+	<a class="nav-link" routerLink="/home/themes" (click)="closeDrawer()">Thèmes</a>
+	<a class="profile-icon drawer-profile" routerLink="/home/profile" (click)="closeDrawer()" aria-label="Profil">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+			stroke-width="1.5">
+			<circle cx="12" cy="8" r="4" />
+			<path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+		</svg>
+	</a>
+</aside>
+}

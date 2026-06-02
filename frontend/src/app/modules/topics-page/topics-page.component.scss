@@ -1,0 +1,39 @@
+.topics-wrapper {
+  padding: 28px 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.topics-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.topics-grid > li {
+  display: flex;
+}
+
+.status-msg {
+  text-align: center;
+  color: #666;
+  margin-top: 48px;
+  font-size: 14px;
+
+  &.error {
+    color: #d32f2f;
+  }
+}
+
+@media (max-width: 768px) {
+  .topics-wrapper {
+    padding: 16px;
+  }
+
+  .topics-grid {
+    grid-template-columns: 1fr;
+  }
+}

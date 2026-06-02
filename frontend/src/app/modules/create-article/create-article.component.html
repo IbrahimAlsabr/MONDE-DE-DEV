@@ -1,0 +1,33 @@
+<div class="create-wrapper">
+
+	<div class="create-header">
+		<button class="back-btn" (click)="goBack()" aria-label="Retour">←</button>
+		<h1 class="create-title">Créer un nouvel article</h1>
+	</div>
+
+	@if (error()) {
+	<p class="error-msg">{{ error() }}</p>
+	}
+
+	<form class="create-form" (ngSubmit)="submit()" #f="ngForm">
+
+		<select class="form-control" [(ngModel)]="topicId" name="topicId" required>
+			<option [ngValue]="null" disabled selected>Sélectionner un thème</option>
+			@for (topic of topics(); track topic.id) {
+			<option [ngValue]="topic.id">{{ topic.name }}</option>
+			}
+		</select>
+
+		<input class="form-control" type="text" placeholder="Titre de l'article" [(ngModel)]="title" name="title"
+			maxlength="150" required />
+
+		<textarea class="form-control content-area" placeholder="Contenu de l'article" [(ngModel)]="content"
+			name="content" maxlength="5000" rows="10" required>
+    </textarea>
+
+		<button type="submit" class="btn-primary" [disabled]="submitting() || !isValid()">
+			{{ submitting() ? 'Création…' : 'Créer' }}
+		</button>
+
+	</form>
+</div>

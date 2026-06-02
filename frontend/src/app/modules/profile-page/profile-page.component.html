@@ -1,0 +1,62 @@
+@if (loading()) {
+<p class="status-msg">Chargement…</p>
+} @else {
+<div class="profile-wrapper">
+
+	<!-- ────────────── Section profil ──────────── -->
+	<section class="profile-section">
+		<h1 class="section-title">Profil utilisateur</h1>
+
+		@if (saveSuccess()) {
+		<p class="success-msg">Profil mis à jour avec succès.</p>
+		}
+		@if (saveError()) {
+		<p class="error-msg">{{ saveError() }}</p>
+		}
+
+		<form class="profile-form" (ngSubmit)="save()" #f="ngForm">
+			<input class="form-control" type="text" placeholder="Username" [(ngModel)]="username" name="username"
+				minlength="3" maxlength="50" required />
+
+			<input class="form-control" type="email" placeholder="email@email.fr" [(ngModel)]="email" name="email"
+				required />
+
+			<input class="form-control" type="password" placeholder="Mot de passe" [(ngModel)]="password"
+				name="password" autocomplete="new-password" />
+
+			@if (password) {
+			<input class="form-control" type="password" placeholder="Confirmer le mot de passe"
+				[(ngModel)]="confirmPassword" name="confirmPassword" autocomplete="new-password" />
+			}
+
+			<button type="submit" class="btn-primary" [disabled]="saving()">
+				{{ saving() ? 'Sauvegarde…' : 'Sauvegarder' }}
+			</button>
+		</form>
+	</section>
+
+	<hr class="separator" />
+
+	<!-- ────────── Section abonnements ─────────── -->
+	<section class="subscriptions-section">
+		<h2 class="section-title">Abonnements</h2>
+
+		@if (profile() && profile()!.subscriptions.length === 0) {
+		<p class="no-subs">
+			Vous n'êtes abonné à aucun thème.<br />
+			Rendez-vous dans la section <strong>Thèmes</strong> pour vous abonner.
+		</p>
+		}
+
+		<ul class="subs-grid">
+			@for (sub of profile()?.subscriptions ?? []; track sub.id) {
+			<li>
+				<app-subscription-box [name]="sub.name" [description]="sub.description"
+					[loading]="loadingUnsubTopicId() === sub.id" mode="profile" (unsubscribe)="onUnsubscribe(sub.id)" />
+			</li>
+			}
+		</ul>
+	</section>
+
+</div>
+}

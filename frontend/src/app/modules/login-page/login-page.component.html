@@ -1,0 +1,30 @@
+<div class="page">
+	<header class="topbar">
+		<img class="topbar-logo" src="/logo.png" alt="MDD" />
+	</header>
+
+	<main class="content">
+		<a class="back" routerLink="/" aria-label="Retour">←</a>
+
+		<div class="card">
+			<img class="hero-logo" src="/logo.png" alt="MDD" />
+			<h1>Se connecter</h1>
+
+			<form [formGroup]="form" (ngSubmit)="submit()">
+				<label>
+					E-mail ou nom d'utilisateur
+					<input type="text" formControlName="identifier" autocomplete="username" />
+				</label>
+
+				<label>
+					Mot de passe
+					<input type="password" formControlName="password" autocomplete="current-password" />
+				</label>
+
+				<button class="btn-primary" type="submit" [disabled]="form.invalid || submitting">
+					Se connecter
+				</button>
+			</form>
+		</div>
+	</main>
+</div>

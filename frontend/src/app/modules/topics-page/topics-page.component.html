@@ -1,0 +1,20 @@
+<div class="topics-wrapper">
+
+	@if (loading()) {
+	<p class="status-msg">Chargement…</p>
+	} @else if (error()) {
+	<p class="status-msg error">{{ error() }}</p>
+	} @else if (topics().length === 0) {
+	<p class="status-msg">Aucun thème disponible pour l'instant.</p>
+	} @else {
+	<ul class="topics-grid">
+		@for (topic of topics(); track topic.id) {
+		<li>
+			<app-subscription-box [name]="topic.name" [description]="topic.description" [subscribed]="topic.subscribed"
+				[loading]="loadingTopicId() === topic.id" mode="topics" (subscribe)="onSubscribe(topic.id)" />
+		</li>
+		}
+	</ul>
+	}
+
+</div>
