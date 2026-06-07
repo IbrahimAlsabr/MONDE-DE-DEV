@@ -22,7 +22,7 @@
 			<h2 class="post-title">{{ post.title }}</h2>
 			<div class="post-meta">
 				<span>{{ post.createdAt | date:'dd/MM/yyyy' }}</span>
-				<span>{{ post.author.username }}</span>
+				<span>{{ post.author.username.charAt(0).toUpperCase() + post.author.username.slice(1) }}</span>
 			</div>
 			<p class="post-excerpt">{{ post.content }}</p>
 		</li>

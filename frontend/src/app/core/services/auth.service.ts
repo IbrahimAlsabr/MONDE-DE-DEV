@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
 import type { AuthResponse, LoginRequest, SignupRequest } from './auth.types';
 
-export type RefreshResponse = { accessToken: string; tokenType: string };
+export type RefreshResponse = { accessToken: string; refreshToken: string; tokenType: string };
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -39,9 +39,13 @@ export class AuthService {
 		return sessionStorage.getItem(this.refreshTokenKey);
 	}
 
-	updateAccessToken(token: string): void {
-		sessionStorage.setItem(this.accessTokenKey, token);
-	}
+  updateAccessToken(token: string): void {
+    sessionStorage.setItem(this.accessTokenKey, token);
+  }
+
+  updateRefreshToken(token: string): void {
+    sessionStorage.setItem(this.refreshTokenKey, token);
+  }
 
 	isAuthenticated(): boolean {
 		return !!this.getAccessToken();

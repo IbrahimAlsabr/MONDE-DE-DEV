@@ -100,7 +100,8 @@ public class AuthServiceImpl implements AuthService {
 		}
 
 		String accessToken = tokenService.generateToken(authentication);
-		return new RefreshTokenResponse(accessToken, "Bearer");
+		String newRefreshToken = tokenService.generateRefreshToken(authentication);
+		return new RefreshTokenResponse(accessToken, newRefreshToken, "Bearer");
 	}
 
 	private static String normalize(String v) {
