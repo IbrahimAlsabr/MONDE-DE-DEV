@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
 import type { AuthResponse, LoginRequest, SignupRequest } from './auth.types';
 
+export type RefreshResponse = { accessToken: string; tokenType: string };
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 	private http = inject(HttpClient);
@@ -19,6 +21,11 @@ export class AuthService {
 		return this.http.post<AuthResponse>(`${API_BASE_URL}/api/v1/auth/signup`, payload);
 	}
 
+	refresh(): Observable<RefreshResponse> {
+		const refreshToken = this.getRefreshToken();
+		return this.http.post<RefreshResponse>(`${API_BASE_URL}/api/v1/auth/refresh`, { refreshToken });
+	}
+
 	saveSession(response: AuthResponse): void {
 		sessionStorage.setItem(this.accessTokenKey, response.accessToken);
 		sessionStorage.setItem(this.refreshTokenKey, response.refreshToken);
@@ -26,6 +33,14 @@ export class AuthService {
 
 	getAccessToken(): string | null {
 		return sessionStorage.getItem(this.accessTokenKey);
+	}
+
+	getRefreshToken(): string | null {
+		return sessionStorage.getItem(this.refreshTokenKey);
+	}
+
+	updateAccessToken(token: string): void {
+		sessionStorage.setItem(this.accessTokenKey, token);
 	}
 
 	isAuthenticated(): boolean {
@@ -37,4 +52,3 @@ export class AuthService {
 		sessionStorage.removeItem(this.refreshTokenKey);
 	}
 }
-
