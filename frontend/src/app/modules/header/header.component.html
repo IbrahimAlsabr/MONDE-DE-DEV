@@ -1,44 +1,57 @@
-<header class="header">
+<header class="header" role="banner">
 	<!-- Logo -->
-	<a class="logo" routerLink="/home">
-		<img src="/logo.png" alt="MDD" />
+	<a class="logo" routerLink="/home" aria-label="MDD – Retour à l'accueil">
+		<img src="/logo.png" alt="" aria-hidden="true" />
 	</a>
 
 	<!-- Desktop nav -->
-	<nav class="desktop-nav">
-		<button class="logout-btn" (click)="logout()">Se déconnecter</button>
-		<a class="nav-link" routerLink="/home/articles">Articles</a>
-		<a class="nav-link" routerLink="/home/themes">Thèmes</a>
+	<nav class="desktop-nav" aria-label="Navigation principale">
+		<button class="logout-btn" (click)="logout()" type="button">Se déconnecter</button>
+		<a class="nav-link" routerLink="/home/articles" routerLinkActive="active" [routerLinkActiveOptions]="{exact:false}">Articles</a>
+		<a class="nav-link" routerLink="/home/themes" routerLinkActive="active" [routerLinkActiveOptions]="{exact:false}">Thèmes</a>
 	</nav>
 
 	<!-- Desktop profile icon -->
-	<a class="profile-icon desktop-profile" routerLink="/home/profile" aria-label="Profil">
+	<a class="profile-icon desktop-profile" routerLink="/home/profile" aria-label="Mon profil">
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-			stroke-width="1.5">
+			stroke-width="1.5" aria-hidden="true" focusable="false">
 			<circle cx="12" cy="8" r="4" />
 			<path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
 		</svg>
 	</a>
 
 	<!-- Mobile: hamburger -->
-	<button class="hamburger" (click)="toggleDrawer()" aria-label="Menu">
-		<span></span><span></span><span></span>
+	<button
+		class="hamburger"
+		type="button"
+		(click)="toggleDrawer()"
+		[attr.aria-expanded]="drawerOpen()"
+		aria-controls="mobile-drawer"
+		aria-label="Ouvrir le menu de navigation"
+	>
+		<span aria-hidden="true"></span>
+		<span aria-hidden="true"></span>
+		<span aria-hidden="true"></span>
 	</button>
 </header>
 
 <!-- Mobile drawer overlay -->
 @if (drawerOpen()) {
-<div class="overlay" (click)="closeDrawer()"></div>
-<aside class="drawer">
-	<button class="logout-btn" (click)="logout(); closeDrawer()">Se déconnecter</button>
+<div class="overlay" (click)="closeDrawer()" aria-hidden="true"></div>
+<nav
+	id="mobile-drawer"
+	class="drawer"
+	aria-label="Menu mobile"
+>
+	<button class="logout-btn" type="button" (click)="logout(); closeDrawer()">Se déconnecter</button>
 	<a class="nav-link" routerLink="/home/articles" (click)="closeDrawer()">Articles</a>
 	<a class="nav-link" routerLink="/home/themes" (click)="closeDrawer()">Thèmes</a>
-	<a class="profile-icon drawer-profile" routerLink="/home/profile" (click)="closeDrawer()" aria-label="Profil">
+	<a class="profile-icon drawer-profile" routerLink="/home/profile" (click)="closeDrawer()" aria-label="Mon profil">
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-			stroke-width="1.5">
+			stroke-width="1.5" aria-hidden="true" focusable="false">
 			<circle cx="12" cy="8" r="4" />
 			<path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
 		</svg>
 	</a>
-</aside>
+</nav>
 }

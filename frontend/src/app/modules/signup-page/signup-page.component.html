@@ -1,33 +1,90 @@
 <div class="page">
-	<header class="topbar">
+	<header class="topbar" role="banner">
 		<img class="topbar-logo" src="/logo.png" alt="MDD" />
 	</header>
 
-	<main class="content">
-		<a class="back" routerLink="/" aria-label="Retour">←</a>
+	<main class="content" id="main-content" tabindex="-1">
+		<a class="back" routerLink="/" aria-label="Retour à l'accueil">←</a>
 
 		<div class="card">
 			<img class="hero-logo" src="/logo.png" alt="MDD" />
 			<h1>Inscription</h1>
 
-			<form [formGroup]="form" (ngSubmit)="submit()">
-				<label>
-					Nom d'utilisateur
-					<input type="text" formControlName="username" autocomplete="username" />
-				</label>
+			@if (serverError()) {
+			<div class="server-error" role="alert" aria-live="assertive">
+				{{ serverError() }}
+			</div>
+			}
 
-				<label>
-					Adresse e-mail
-					<input type="email" formControlName="email" autocomplete="email" />
-				</label>
+			<form [formGroup]="form" (ngSubmit)="submit()" novalidate aria-label="Formulaire d'inscription">
 
-				<label>
-					Mot de passe
-					<input type="password" formControlName="password" autocomplete="new-password" />
-				</label>
+				<div class="field">
+					<label for="username">Nom d'utilisateur</label>
+					<input
+						id="username"
+						type="text"
+						formControlName="username"
+						autocomplete="username"
+						[attr.aria-invalid]="username.invalid && username.touched"
+						aria-required="true"
+						aria-describedby="username-error"
+					/>
+					@if (username.touched) {
+						@if (username.hasError('required')) {
+						<span id="username-error" class="field-error" role="alert">Ce champ est obligatoire.</span>
+						} @else if (username.hasError('minlength')) {
+						<span id="username-error" class="field-error" role="alert">Le nom d'utilisateur doit contenir au moins 3 caractères.</span>
+						}
+					}
+				</div>
 
-				<button class="btn-primary" type="submit" [disabled]="form.invalid || submitting">
-					S'inscrire
+				<div class="field">
+					<label for="email">Adresse e-mail</label>
+					<input
+						id="email"
+						type="email"
+						formControlName="email"
+						autocomplete="email"
+						[attr.aria-invalid]="email.invalid && email.touched"
+						aria-required="true"
+						aria-describedby="email-error"
+					/>
+					@if (email.touched) {
+						@if (email.hasError('required')) {
+						<span id="email-error" class="field-error" role="alert">Ce champ est obligatoire.</span>
+						} @else if (email.hasError('email')) {
+						<span id="email-error" class="field-error" role="alert">Veuillez saisir une adresse e-mail valide.</span>
+						}
+					}
+				</div>
+
+				<div class="field">
+					<label for="password">Mot de passe</label>
+					<input
+						id="password"
+						type="password"
+						formControlName="password"
+						autocomplete="new-password"
+						[attr.aria-invalid]="password.invalid && password.touched"
+						aria-required="true"
+						aria-describedby="password-error password-hint"
+					/>
+					<span id="password-hint" class="field-hint">
+						8 caractères minimum, avec majuscule, minuscule, chiffre et caractère spécial.
+					</span>
+					@if (password.touched) {
+						@if (password.hasError('required')) {
+						<span id="password-error" class="field-error" role="alert">Ce champ est obligatoire.</span>
+						} @else if (password.hasError('minlength')) {
+						<span id="password-error" class="field-error" role="alert">Le mot de passe doit contenir au moins 8 caractères.</span>
+						} @else if (password.hasError('pattern')) {
+						<span id="password-error" class="field-error" role="alert">Le mot de passe doit contenir une majuscule, une minuscule, un chiffre et un caractère spécial.</span>
+						}
+					}
+				</div>
+
+				<button class="btn-primary" type="submit" [disabled]="submitting()">
+					{{ submitting() ? 'Inscription…' : 'S\'inscrire' }}
 				</button>
 			</form>
 		</div>

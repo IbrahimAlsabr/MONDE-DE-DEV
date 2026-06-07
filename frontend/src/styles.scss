@@ -1,15 +1,49 @@
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 html,
 body {
-  height: 100%;
+	height: 100%;
 }
 
 body {
-  margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color: #111;
-  background: #fff;
+	margin: 0;
+	font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	color: #111;
+	background: #fff;
+}
+
+/* ── Skip navigation link (WCAG 2.4.1) ─────────────────── */
+.skip-link {
+	position: absolute;
+	top: -100%;
+	left: 8px;
+	z-index: 9999;
+	background: #6c63ff;
+	color: #fff;
+	padding: 10px 16px;
+	border-radius: 0 0 4px 4px;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: top 0.15s;
+
+	&:focus {
+		top: 0;
+		outline: 3px solid #fff;
+		outline-offset: 2px;
+	}
+}
+
+/* ── Global keyboard focus indicator (WCAG 2.4.7) ──────── */
+:focus-visible {
+	outline: 3px solid #6c63ff;
+	outline-offset: 2px;
+	border-radius: 2px;
+}
+
+/* Suppress focus ring for mouse/touch users */
+:focus:not(:focus-visible) {
+	outline: none;
 }

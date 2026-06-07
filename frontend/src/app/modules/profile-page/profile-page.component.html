@@ -1,28 +1,87 @@
 @if (loading()) {
-<p class="status-msg">Chargement…</p>
+<p class="status-msg" aria-live="polite" aria-busy="true">Chargement…</p>
 } @else {
 <div class="profile-wrapper">
 
 	<!-- ────────────── Section profil ──────────── -->
-	<section class="profile-section">
-		<h1 class="section-title">Profil utilisateur</h1>
+	<section class="profile-section" aria-labelledby="profile-title">
+		<h1 id="profile-title" class="section-title">Profil utilisateur</h1>
 
 		@if (saveSuccess()) {
-		<p class="success-msg">Profil mis à jour avec succès.</p>
+		<p class="success-msg" role="status" aria-live="polite">Profil mis à jour avec succès.</p>
 		}
 		@if (saveError()) {
-		<p class="error-msg">{{ saveError() }}</p>
+		<p class="error-msg" role="alert" aria-live="assertive">{{ saveError() }}</p>
 		}
 
-		<form class="profile-form" [formGroup]="form" (ngSubmit)="save()">
-			<input class="form-control" type="text" placeholder="Username" formControlName="username" />
+		<form class="profile-form" [formGroup]="form" (ngSubmit)="save()" novalidate aria-label="Modifier le profil">
 
-			<input class="form-control" type="email" placeholder="email@email.fr" formControlName="email" />
+			<div class="field">
+				<label for="prof-username">Nom d'utilisateur</label>
+				<input
+					id="prof-username"
+					class="form-control"
+					type="text"
+					formControlName="username"
+					autocomplete="username"
+					[attr.aria-invalid]="form.get('username')!.invalid && form.get('username')!.touched"
+					aria-required="true"
+					aria-describedby="prof-username-error"
+				/>
+				@if (form.get('username')!.touched) {
+					@if (form.get('username')!.hasError('required')) {
+					<span id="prof-username-error" class="field-error" role="alert">Ce champ est obligatoire.</span>
+					} @else if (form.get('username')!.hasError('minlength')) {
+					<span id="prof-username-error" class="field-error" role="alert">Le nom d'utilisateur doit contenir au moins 3 caractères.</span>
+					}
+				}
+			</div>
 
-			<input class="form-control" type="password" placeholder="Mot de passe" formControlName="password"
-				autocomplete="new-password" />
+			<div class="field">
+				<label for="prof-email">Adresse e-mail</label>
+				<input
+					id="prof-email"
+					class="form-control"
+					type="email"
+					formControlName="email"
+					autocomplete="email"
+					[attr.aria-invalid]="form.get('email')!.invalid && form.get('email')!.touched"
+					aria-required="true"
+					aria-describedby="prof-email-error"
+				/>
+				@if (form.get('email')!.touched) {
+					@if (form.get('email')!.hasError('required')) {
+					<span id="prof-email-error" class="field-error" role="alert">Ce champ est obligatoire.</span>
+					} @else if (form.get('email')!.hasError('email')) {
+					<span id="prof-email-error" class="field-error" role="alert">Veuillez saisir une adresse e-mail valide.</span>
+					}
+				}
+			</div>
 
-			<button type="submit" class="btn-primary" [disabled]="saving()">
+			<div class="field">
+				<label for="prof-password">Nouveau mot de passe <span class="optional">(optionnel)</span></label>
+				<input
+					id="prof-password"
+					class="form-control"
+					type="password"
+					formControlName="password"
+					autocomplete="new-password"
+					[attr.aria-invalid]="form.get('password')!.invalid && form.get('password')!.touched"
+					aria-describedby="prof-password-error prof-password-hint"
+				/>
+				<span id="prof-password-hint" class="field-hint">
+					Laissez vide pour conserver votre mot de passe actuel.
+				</span>
+				@if (form.get('password')!.touched) {
+					@if (form.get('password')!.hasError('minlength')) {
+					<span id="prof-password-error" class="field-error" role="alert">Le mot de passe doit contenir au moins 8 caractères.</span>
+					} @else if (form.get('password')!.hasError('pattern')) {
+					<span id="prof-password-error" class="field-error" role="alert">Le mot de passe doit contenir une majuscule, une minuscule, un chiffre et un caractère spécial.</span>
+					}
+				}
+			</div>
+
+			<button type="submit" class="btn-primary" [disabled]="saving() || form.invalid">
 				{{ saving() ? 'Sauvegarde…' : 'Sauvegarder' }}
 			</button>
 		</form>
@@ -31,8 +90,8 @@
 	<hr class="separator" />
 
 	<!-- ────────── Section abonnements ─────────── -->
-	<section class="subscriptions-section">
-		<h2 class="section-title">Abonnements</h2>
+	<section class="subscriptions-section" aria-labelledby="subs-title">
+		<h2 id="subs-title" class="section-title">Abonnements</h2>
 
 		@if (profile() && profile()!.subscriptions.length === 0) {
 		<p class="no-subs">
@@ -41,7 +100,7 @@
 		</p>
 		}
 
-		<ul class="subs-grid">
+		<ul class="subs-grid" aria-label="Vos abonnements">
 			@for (sub of profile()?.subscriptions ?? []; track sub.id) {
 			<li>
 				<app-subscription-box [name]="sub.name" [description]="sub.description"

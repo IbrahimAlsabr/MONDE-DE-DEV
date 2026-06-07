@@ -8,6 +8,7 @@ import { ArticleDetailsComponent } from './modules/article-details/article-detai
 import { CreateArticleComponent } from './modules/create-article/create-article.component';
 import { TopicsPageComponent } from './modules/topics-page/topics-page.component';
 import { ProfilePageComponent } from './modules/profile-page/profile-page.component';
+import { NotFoundComponent } from './modules/not-found/not-found.component';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -27,5 +28,5 @@ export const routes: Routes = [
 			{ path: 'profile', component: ProfilePageComponent },
 		],
 	},
-	{ path: '**', redirectTo: '' },
+	{ path: '**', component: NotFoundComponent },
 ];
