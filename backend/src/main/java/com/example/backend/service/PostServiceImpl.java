@@ -18,18 +18,22 @@ import com.example.backend.model.User;
 import com.example.backend.repository.CommentRepository;
 import com.example.backend.repository.PostRepository;
 import com.example.backend.repository.TopicRepository;
+import com.example.backend.service.interfaces.PostService;
+import com.example.backend.service.interfaces.UserService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class PostService {
+public class PostServiceImpl implements PostService {
+
 	private final PostRepository postRepository;
 	private final TopicRepository topicRepository;
 	private final CommentRepository commentRepository;
 	private final UserService userService;
 
+	@Override
 	@Transactional
 	public PostResponse create(String authenticationName, PostCreateRequest request) {
 		User user = userService.requireCurrentUser(authenticationName);
@@ -42,18 +46,18 @@ public class PostService {
 		post.setUser(user);
 		post.setTopic(topic);
 
-		Post saved = postRepository.save(post);
-		return toResponse(saved, List.of());
+		return toResponse(postRepository.save(post), List.of());
 	}
 
+	@Override
 	public PostResponse getById(String authenticationName, Long id) {
-		// Ensure caller is authenticated
 		userService.requireCurrentUser(authenticationName);
 
 		Post post = postRepository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
 
-		List<CommentResponse> comments = commentRepository.findAllByPostIdOrderByCreatedAtAsc(post.getId()).stream()
+		List<CommentResponse> comments = commentRepository
+				.findAllByPostIdOrderByCreatedAtAsc(post.getId()).stream()
 				.map(this::toCommentResponse)
 				.toList();
 
@@ -79,4 +83,3 @@ public class PostService {
 				c.getCreatedAt());
 	}
 }
-

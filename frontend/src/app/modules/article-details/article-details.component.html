@@ -1,63 +1,56 @@
 @if (loading()) {
-  <div class="status-msg">Chargement…</div>
+<div class="status-msg">Chargement…</div>
 } @else if (error()) {
-  <div class="status-msg error">{{ error() }}</div>
+<div class="status-msg error">{{ error() }}</div>
 } @else if (post()) {
-  <div class="details-wrapper">
+<div class="details-wrapper">
 
-    <!-- Header: back + title -->
-    <div class="details-header">
-      <button class="back-btn" (click)="goBack()" aria-label="Retour">←</button>
-      <h1 class="post-title">{{ post()!.title }}</h1>
-    </div>
+	<!-- Header: back + title -->
+	<div class="details-header">
+		<button class="back-btn" (click)="goBack()" aria-label="Retour">←</button>
+		<h1 class="post-title">{{ post()!.title }}</h1>
+	</div>
 
-    <!-- Meta: date / author / topic -->
-    <div class="post-meta">
-      <span>{{ post()!.createdAt | date:'dd/MM/yyyy' }}</span>
-      <span>{{ post()!.author.username }}</span>
-      <span>{{ post()!.topic.name }}</span>
-    </div>
+	<!-- Meta: date / author / topic -->
+	<div class="post-meta">
+		<span>{{ post()!.createdAt | date:'dd/MM/yyyy' }}</span>
+		<span>{{ post()!.author.username }}</span>
+		<span>{{ post()!.topic.name }}</span>
+	</div>
 
-    <!-- Content -->
-    <p class="post-content">{{ post()!.content }}</p>
+	<!-- Content -->
+	<p class="post-content">{{ post()!.content }}</p>
 
-    <hr class="separator" />
+	<hr class="separator" />
 
-    <!-- Comments section -->
-    <section class="comments-section">
-      <h2 class="comments-title">Commentaires</h2>
+	<!-- Comments section -->
+	<section class="comments-section">
+		<h2 class="comments-title">Commentaires</h2>
 
-      @if (post()!.comments.length === 0) {
-        <p class="no-comments">Aucun commentaire pour l'instant. Soyez le premier !</p>
-      }
+		@if (post()!.comments.length === 0) {
+		<p class="no-comments">Aucun commentaire pour l'instant. Soyez le premier !</p>
+		}
 
-      <ul class="comments-list">
-        @for (comment of post()!.comments; track comment.id) {
-          <li class="comment">
-            <span class="comment-author">{{ comment.author.username }}</span>
-            <div class="comment-bubble">{{ comment.content }}</div>
-          </li>
-        }
-      </ul>
+		<ul class="comments-list">
+			@for (comment of post()!.comments; track comment.id) {
+			<li class="comment">
+				<span class="comment-author">{{ comment.author.username }}</span>
+				<div class="comment-bubble">{{ comment.content }}</div>
+			</li>
+			}
+		</ul>
 
-      <!-- New comment form -->
-      <div class="comment-form">
-        <textarea
-          class="comment-input"
-          placeholder="Écrivez ici votre commentaire"
-          [(ngModel)]="newComment"
-          (keydown)="onKeydown($event)"
-          rows="3">
+		<!-- New comment form -->
+		<div class="comment-form">
+			<textarea class="comment-input" placeholder="Écrivez ici votre commentaire" [(ngModel)]="newComment"
+				rows="3">
         </textarea>
-        <button
-          class="send-btn"
-          (click)="submitComment()"
-          [disabled]="submitting() || !newComment.trim()"
-          aria-label="Envoyer">
-          ➤
-        </button>
-      </div>
-    </section>
+			<button class="send-btn" (click)="submitComment()" [disabled]="submitting() || !newComment.trim()"
+				aria-label="Envoyer">
+				➤
+			</button>
+		</div>
+	</section>
 
-  </div>
+</div>
 }

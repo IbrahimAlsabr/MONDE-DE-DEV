@@ -16,10 +16,15 @@ export class LoginPageComponent {
 
 	private fb = inject(FormBuilder);
 	private authService = inject(AuthService);
-	
+
 	form = this.fb.group({
 		identifier: ['', [Validators.required]],
-		password: ['', [Validators.required]],
+		password: ['', [
+			Validators.required,
+			Validators.minLength(8),
+			Validators.pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).*$/),
+			Validators.maxLength(50),
+		]],
 	});
 
 	submit() {

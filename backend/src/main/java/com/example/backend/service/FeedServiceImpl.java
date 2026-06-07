@@ -12,18 +12,23 @@ import com.example.backend.model.Subscription;
 import com.example.backend.model.User;
 import com.example.backend.repository.PostRepository;
 import com.example.backend.repository.SubscriptionRepository;
+import com.example.backend.service.interfaces.FeedService;
+import com.example.backend.service.interfaces.UserService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class FeedService {
+public class FeedServiceImpl implements FeedService {
+
 	private final SubscriptionRepository subscriptionRepository;
 	private final PostRepository postRepository;
 	private final UserService userService;
 
+	@Override
 	public List<PostResponse> getFeed(String authenticationName, String sort) {
 		User user = userService.requireCurrentUser(authenticationName);
+
 		List<Long> topicIds = subscriptionRepository.findAllByUserId(user.getId()).stream()
 				.map(Subscription::getTopic)
 				.map(t -> t.getId())
@@ -33,16 +38,11 @@ public class FeedService {
 			return List.of();
 		}
 
-		List<Post> posts;
-		if ("asc".equalsIgnoreCase(sort)) {
-			posts = postRepository.findAllByTopicIdInOrderByCreatedAtAsc(topicIds);
-		} else {
-			posts = postRepository.findAllByTopicIdInOrderByCreatedAtDesc(topicIds);
-		}
+		List<Post> posts = "asc".equalsIgnoreCase(sort)
+				? postRepository.findAllByTopicIdInOrderByCreatedAtAsc(topicIds)
+				: postRepository.findAllByTopicIdInOrderByCreatedAtDesc(topicIds);
 
-		return posts.stream()
-				.map(this::toResponse)
-				.toList();
+		return posts.stream().map(this::toResponse).toList();
 	}
 
 	private PostResponse toResponse(Post post) {
@@ -56,4 +56,3 @@ public class FeedService {
 				List.of());
 	}
 }
-

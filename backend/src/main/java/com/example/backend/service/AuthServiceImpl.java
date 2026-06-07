@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,23 +18,22 @@ import com.example.backend.dto.UserResponse;
 import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.security.CustomUserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.backend.service.interfaces.AuthService;
+import com.example.backend.service.interfaces.TokenService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthServiceImpl implements AuthService {
 
 	private final AuthenticationManager authenticationManager;
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final TokenService tokenService;
 
-	// ===========================================================
-	// ==================== SIGNUP USER ==========================
-	// ===========================================================
+	@Override
 	@Transactional
 	public AuthResponse signup(SignupRequest signupRequest) {
 		String email = normalize(signupRequest.getEmail());
@@ -60,9 +60,7 @@ public class AuthService {
 		}
 	}
 
-	// ===========================================================
-	// ======================== LOGIN ============================
-	// ===========================================================
+	@Override
 	public AuthResponse login(LoginRequest loginRequest) {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(
@@ -89,9 +87,7 @@ public class AuthService {
 				new UserResponse(user.getId(), user.getEmail(), user.getUsername()));
 	}
 
-	// ===========================================================
-	// ================== REFRESH TOKEN ==========================
-	// ===========================================================
+	@Override
 	public RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
 		String tokenValue = refreshTokenRequest.getRefreshToken();
 		if (tokenValue == null || tokenValue.isBlank()) {
@@ -110,5 +106,4 @@ public class AuthService {
 	private static String normalize(String v) {
 		return v == null ? null : v.trim();
 	}
-
 }

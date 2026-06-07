@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.dto.TopicResponse;
-import com.example.backend.service.SubscriptionService;
-import com.example.backend.service.TopicService;
+import com.example.backend.service.interfaces.SubscriptionService;
+import com.example.backend.service.interfaces.TopicService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

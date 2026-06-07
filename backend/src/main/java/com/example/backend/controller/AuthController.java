@@ -11,7 +11,7 @@ import com.example.backend.dto.LoginRequest;
 import com.example.backend.dto.RefreshTokenRequest;
 import com.example.backend.dto.RefreshTokenResponse;
 import com.example.backend.dto.SignupRequest;
-import com.example.backend.service.AuthService;
+import com.example.backend.service.interfaces.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
