@@ -14,20 +14,13 @@
 		<p class="error-msg">{{ saveError() }}</p>
 		}
 
-		<form class="profile-form" (ngSubmit)="save()" #f="ngForm">
-			<input class="form-control" type="text" placeholder="Username" [(ngModel)]="username" name="username"
-				minlength="3" maxlength="50" required />
+		<form class="profile-form" [formGroup]="form" (ngSubmit)="save()">
+			<input class="form-control" type="text" placeholder="Username" formControlName="username" />
 
-			<input class="form-control" type="email" placeholder="email@email.fr" [(ngModel)]="email" name="email"
-				required />
+			<input class="form-control" type="email" placeholder="email@email.fr" formControlName="email" />
 
-			<input class="form-control" type="password" placeholder="Mot de passe" [(ngModel)]="password"
-				name="password" autocomplete="new-password" />
-
-			@if (password) {
-			<input class="form-control" type="password" placeholder="Confirmer le mot de passe"
-				[(ngModel)]="confirmPassword" name="confirmPassword" autocomplete="new-password" />
-			}
+			<input class="form-control" type="password" placeholder="Mot de passe" formControlName="password"
+				autocomplete="new-password" />
 
 			<button type="submit" class="btn-primary" [disabled]="saving()">
 				{{ saving() ? 'Sauvegarde…' : 'Sauvegarder' }}
